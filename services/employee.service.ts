@@ -30,12 +30,16 @@ export const InsertOne = async (employee: IEmployee): Promise<IResponseModel> =>
             employee.email = emailTemplate.getCompleteEmail();
 
             //En  caso de no haber error guardo el empleado
+            console.log(employee)
             InsertOneEmployee(employee)
             .then( (result: IResponseModel) => {
                 if(result.Error)
                     return reject(result)
                 else
                     return resolve(result)
+            })
+            .catch(error => {
+                return reject(error)
             });
         }
     })

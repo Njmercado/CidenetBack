@@ -27,3 +27,13 @@ export class BooleanResponseModel implements IResponseModel {
         this.Message = Message;
     }
 }
+
+export class ExceptionResponseModel implements IResponseModel {
+    Error: Boolean;
+    Message: any
+
+    constructor(Error: Boolean, Message: any) {
+        this.Error = Error;
+        this.Message = Message;
+    }
+}

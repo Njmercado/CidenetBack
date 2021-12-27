@@ -5,7 +5,7 @@ import {
 import { FindAll, InsertOne } from '../services/employee.service'
 import { Router, Request, Response, NextFunction } from 'express'
 import { EmployeeModel } from '../model/models/employee.model';
-import { Countries, IDTypes } from '../model/enums/enums';
+import { CountryEnum } from '../model/enums/enums';
 var router = Router();
 
 router.post(
@@ -13,7 +13,7 @@ router.post(
   [
   ],
   async function(req: Request, res: Response, next: NextFunction) {
-    const country: Countries = Countries[req.body.country as keyof typeof Countries]
+    const country: CountryEnum = CountryEnum[req.body.country as keyof typeof CountryEnum]
 
     const employeeModel = new EmployeeModel(
       req.body.firstname,
@@ -21,13 +21,22 @@ router.post(
       req.body.secondSurname,
       country,
       req.body.idType,
+      req.body.area,
+      req.body.admissionDate,
+      req.body.registerDate,
       req.body.othersnames
     );
-    const result = await InsertOne(employeeModel)
-
-    return res
-      .status(200)
-      .json(result)
+    InsertOne(employeeModel)
+    .then(result => {
+      return res
+        .status(200)
+        .json(result)
+    })
+    .catch(error => {
+      return res
+        .status(400)
+        .json(error)
+    })
   }
 ).get(
   '/',

@@ -1,6 +1,6 @@
 import {IEmployee} from '../model/interfaces/employee.interface';
 import Employee from '../model/schemas/employee.schema';
-import { EmployeesResponseModel, BooleanResponseModel, IResponseModel } from '../model/models/response.model';
+import { ExceptionResponseModel, EmployeesResponseModel, BooleanResponseModel, IResponseModel } from '../model/models/response.model';
 
 export const PaginateEmployees = async (page: number = 0, documents: number = 10): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, rejects: any) => {
@@ -27,17 +27,24 @@ export const InsertOneEmployee = async (employee: IEmployee): Promise<IResponseM
             secondSurname: employee.secondSurname,
             othersnames: employee.othersnames,
             country: employee.country,
+            area: employee.area,
+            admissionDate: employee.admissionDate,
+            registerDate: employee.registerDate,
             idType: employee.idType
         })
 
-        employeeModel.save((error,result) => {
-            if(error) {
-                console.error("ERROR SAVING EMPLOYEE IN INSERTONEEMPLOYEE IN EMPLOYEES QUERY: ", error)
-                reject(new BooleanResponseModel(true, error.toString()))
-            } else {
-                resolve(new BooleanResponseModel(false, ""))
-            }
-        })
+        try {
+            employeeModel.save((error,result) => {
+                if(error) {
+                    console.error("ERROR SAVING EMPLOYEE IN INSERTONEEMPLOYEE IN EMPLOYEES QUERY: ", error)
+                    reject(new BooleanResponseModel(true, error.toString()))
+                } else {
+                    resolve(new BooleanResponseModel(false, ""))
+                }
+            })
+        } catch(e) {
+            reject(new ExceptionResponseModel(true, e))
+        }
     });
 }
 
@@ -52,8 +59,6 @@ export const GetLastEmployeeInsertedWithEmail = async (email: String | RegExp): 
                 console.error("ERROR IN GETLASTEMPLOYEEINSERTEDWITHEMAIL IN EMPLOYEES QUERY: ", error)
                 return reject(new BooleanResponseModel(true, error.toString()))
             }
-            console.log("Result")
-            console.log(result)
             return resolve(new EmployeesResponseModel(false, result))           
         });
     })

@@ -1,6 +1,8 @@
 import {
-    Countries,
-    IDTypes
+    CountryEnum,
+    IDTypeEnum,
+    AreaEnum,
+    StateEnum
 } from '../enums/enums';
 
 export interface IEmployee {
@@ -9,6 +11,10 @@ export interface IEmployee {
     surname: string,
     secondSurname: string,
     othersnames?: string,
-    country: Countries,
-    idType: IDTypes
+    country: CountryEnum,
+    idType: IDTypeEnum,
+    area: AreaEnum,
+    state?: StateEnum,
+    admissionDate?: Date,
+    registerDate?: Date
 }

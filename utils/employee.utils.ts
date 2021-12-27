@@ -1,5 +1,5 @@
 import {IEmployee} from '../model/interfaces/employee.interface';
-import {Countries, Hosts} from '../model/enums/enums';
+import {CountryEnum, HostEnum} from '../model/enums/enums';
 import { EmailModel } from './email.utils'
 
 //Retorna un template del correo de la persona. Tambien retorna un espacio para agregar el ID en caso de ser necesario
@@ -12,11 +12,11 @@ export const GenerateEmailTemplateFromName =  (employee: IEmployee): EmailModel 
     let host = ''
 
     switch(employee.country) {
-        case Countries.COLOMBIA:
-            host = Hosts.COLOMBIA;
+        case CountryEnum.COLOMBIA:
+            host = HostEnum.COLOMBIA;
             break;
-        case Countries.USA:
-            host = Hosts.USA;
+        case CountryEnum.USA:
+            host = HostEnum.USA;
             break;
         default:
             return new EmailModel("", "")
