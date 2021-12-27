@@ -18,6 +18,18 @@ export class EmployeesResponseModel implements IResponseModel {
     }
 }
 
+export class EmployeeResponseModel implements IResponseModel {
+    Error: Boolean;
+    Data: IEmployee;
+    Message: String
+
+    constructor(Error: Boolean, Data: IEmployee, Message: String = "") {
+        this.Error = Error;
+        this.Data = Data;
+        this.Message = Message;
+    }
+}
+
 export class BooleanResponseModel implements IResponseModel {
     Error: Boolean;
     Message: String

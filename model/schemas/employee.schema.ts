@@ -21,6 +21,16 @@ const AreasLength = AreaValues.length / 2;
 
 const EmployeeSchema = new mongoose.Schema<IEmployee>(
   {
+    _id: {
+      type: String,
+      validate: {
+        validator: function(id: string) {
+          return /[A-Za-z0-9\-]/.test(id)
+        },
+        message: "Número de identificación es invalido"
+      },
+      maxlength: 20
+    },
     email: {
       type: String,
       required: [true, 'Ningún correo ha sido ingresado']
@@ -92,6 +102,10 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
       type: Date,
       required: [true, 'Fecha de registro es obligatoria']
     },
+    updateDate: {
+      type: Date,
+      required: [false]
+    },
     area: {
       type: Number,
       enum: AreaValues.slice(AreasLength, -1),
@@ -101,6 +115,9 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
       type: Number,
       default: StateEnum.ACTIVO
     }
+  },
+  {
+    _id: false
   }
 )
 

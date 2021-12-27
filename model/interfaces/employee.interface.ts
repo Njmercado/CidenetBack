@@ -6,6 +6,7 @@ import {
 } from '../enums/enums';
 
 export interface IEmployee {
+    _id?: string,
     email?: string,
     firstname: string,
     surname: string,
@@ -13,8 +14,9 @@ export interface IEmployee {
     othersnames?: string,
     country: CountryEnum,
     idType: IDTypeEnum,
-    area: AreaEnum,
+    area?: AreaEnum,
     state?: StateEnum,
     admissionDate?: Date,
-    registerDate?: Date
+    registerDate?: Date,
+    updateDate?: Date
 }
