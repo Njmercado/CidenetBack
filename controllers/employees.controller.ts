@@ -2,7 +2,7 @@ import {
   check,
   validationResult
 } from 'express-validator';
-import { FindAll, InsertOne, UpdateOne } from '../services/employee.service'
+import { FindAll, InsertOne, UpdateOne, DeleteOne } from '../services/employee.service'
 import { Router, Request, Response, NextFunction } from 'express'
 import { EmployeeModel, UpdateEmployeeModel } from '../model/models/employee.model';
 import { CountryEnum } from '../model/enums/enums';
@@ -74,6 +74,21 @@ router.post(
           .status(400)
           .json(error)
       })
+  }
+).delete(
+  '/',
+  async function(req: Request, res: Response, next: NextFunction) {
+    DeleteOne(req.body._id)
+    .then(result => {
+      return res
+        .status(200)
+        .json(result)
+    })
+    .catch(error => {
+      return res
+        .status(200)
+        .json(error)     
+    })
   }
 )
 

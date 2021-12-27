@@ -1,6 +1,12 @@
 import { IEmployee } from '../model/interfaces/employee.interface'
 import { IResponseModel, EmployeeResponseModel, BooleanResponseModel } from '../model/models/response.model'
-import { PaginateEmployees, GetLastEmployeeInsertedWithEmail, InsertOneEmployee, UpdateOneEmployee, FindOneEmployeeByID } from '../queries/employees.query';
+import { 
+    PaginateEmployees,
+    GetLastEmployeeInsertedWithEmail,
+    InsertOneEmployee, UpdateOneEmployee,
+    FindOneEmployeeByID,
+    DeleteOneEmployee
+} from '../queries/employees.query';
 import { GenerateEmailTemplateFromName, GetNextEmailID } from '../utils/employee.utils'
 import { EmailModel } from '../utils/email.utils';
 
@@ -71,6 +77,16 @@ export const UpdateOne = async (employee: IEmployee): Promise<IResponseModel> =>
         .catch(error => {
             return reject(error);
         });
+    })
+}
+
+export const DeleteOne = async (idNumber: string): Promise<IResponseModel> => {
+    return new Promise<IResponseModel>((resolve: any, reject: any) => {
+        DeleteOneEmployee(idNumber)
+        .then((result: IResponseModel) => {
+            if(result.Error) return reject(result);
+            else return resolve(result);
+        })
     })
 }
 

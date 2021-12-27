@@ -115,3 +115,21 @@ export const FindOneEmployeeByID = async (idNumber: string): Promise<IResponseMo
             })
     })
 }
+
+export const DeleteOneEmployee = async (idNumber: string): Promise<IResponseModel> => {
+    return new Promise<IResponseModel>((resolve: any, reject: any) => {
+        Employee
+            .deleteOne({_id: idNumber})
+            .then((result: any) => {
+                if(result == null){
+                    console.error("ERROR IN DELETEONEEMPLOYEE IN EMPLOYEES QUERY: ", result);
+                    return reject(new BooleanResponseModel(true, "Not found"));
+                } else {
+                    return resolve(new BooleanResponseModel(false, ""))
+                }
+            })
+            .catch(error => {
+                return reject(new BooleanResponseModel(true, error))
+            })
+    })
+}
