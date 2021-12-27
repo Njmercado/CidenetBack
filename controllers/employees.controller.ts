@@ -6,6 +6,7 @@ import { FindAll, InsertOne, UpdateOne, DeleteOne } from '../services/employee.s
 import { Router, Request, Response, NextFunction } from 'express'
 import { EmployeeModel, UpdateEmployeeModel } from '../model/models/employee.model';
 import { CountryEnum } from '../model/enums/enums';
+import { EmployeesFilters } from '../utils/filters.utils';
 var router = Router();
 
 router.post(
@@ -41,7 +42,18 @@ router.post(
   async function(req: Request, res: Response, next: NextFunction) {
     const page = Number.parseInt(req.query["page"] as string);
     const documents = Number.parseInt(req.query["documents"] as string);
-    const result = await FindAll(page, documents);
+    const filters = new EmployeesFilters(
+      req.body._id || null,
+      req.body.email || null,
+      req.body.firstname || null,
+      req.body.surname || null,
+      req.body.secondSurname || null,
+      req.body.country || null,
+      req.body.idType|| null,
+      req.body.area || null,
+      req.body.state || null,
+    );
+    const result = await FindAll(page, documents, filters);
     return res
       .status(200)
       .json(result);

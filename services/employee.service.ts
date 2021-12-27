@@ -9,10 +9,11 @@ import {
 } from '../queries/employees.query';
 import { GenerateEmailTemplateFromName, GetNextEmailID } from '../utils/employee.utils'
 import { EmailModel } from '../utils/email.utils';
+import { EmployeesFilters } from '../utils/filters.utils';
 
-export const FindAll = async (page: number = 0, documents: number = 10): Promise<IResponseModel> => {
+export const FindAll = async (page: number = 0, documents: number = 10, filters: EmployeesFilters): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, reject: any) => {
-        PaginateEmployees(page, documents)
+        PaginateEmployees(page, documents, filters)
         .then( (result: IResponseModel) => {
             if(result.Error) {
                 return reject(result)

@@ -1,11 +1,18 @@
 import {IEmployee} from '../model/interfaces/employee.interface';
 import Employee from '../model/schemas/employee.schema';
-import { ExceptionResponseModel, EmployeesResponseModel, BooleanResponseModel, IResponseModel, EmployeeResponseModel } from '../model/models/response.model';
+import {
+    ExceptionResponseModel,
+    EmployeesResponseModel,
+    BooleanResponseModel,
+    IResponseModel,
+    EmployeeResponseModel
+} from '../model/models/response.model';
+import { EmployeesFilters } from '../utils/filters.utils'
 
-export const PaginateEmployees = async (page: number = 0, documents: number = 10): Promise<IResponseModel> => {
+export const PaginateEmployees = async (page: number = 0, documents: number = 10, filters: EmployeesFilters): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, rejects: any) => {
         Employee
-            .find({})
+            .find(filters.getFiltersAsJson())
             .skip(page)
             .limit(documents)
             .exec((error, result: Array<IEmployee>) => {
