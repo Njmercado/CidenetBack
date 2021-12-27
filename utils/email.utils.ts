@@ -19,7 +19,7 @@ export class EmailModel {
         else return `${this.Username}@${this.Host}`;
     }
 
-    getEmailWitoutID() {
+    getEmailWithoutID() {
         return `${this.Username}@${this.Host}`;
     }
 
