@@ -42,17 +42,19 @@ router.post(
   async function(req: Request, res: Response, next: NextFunction) {
     const page = Number.parseInt(req.query["page"] as string);
     const documents = Number.parseInt(req.query["documents"] as string);
+
     const filters = new EmployeesFilters(
-      req.body._id || null,
-      req.body.email || null,
-      req.body.firstname || null,
-      req.body.surname || null,
-      req.body.secondSurname || null,
-      req.body.country || null,
-      req.body.idType|| null,
-      req.body.area || null,
-      req.body.state || null,
+      req.query?._id as string,
+      req.query?.email as string,
+      req.query.firstname as string,
+      req.query.surname as string,
+      req.query.secondSurname as string,
+      req.query.country as string,
+      Number.parseInt(req.query.idType as string) || -1,
+      Number.parseInt(req.query.area as string) || -1,
+      Number.parseInt(req.query.state as string) || -1,
     );
+
     const result = await FindAll(page, documents, filters);
     return res
       .status(200)

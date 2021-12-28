@@ -11,6 +11,7 @@ import { EmployeesFilters } from '../utils/filters.utils'
 
 export const PaginateEmployees = async (page: number = 0, documents: number = 10, filters: EmployeesFilters): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, rejects: any) => {
+        console.log(filters.getFiltersAsJson())
         Employee
             .find(filters.getFiltersAsJson())
             .skip(page)
