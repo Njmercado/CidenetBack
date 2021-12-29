@@ -3,6 +3,7 @@ import { IEmployee } from '../interfaces/employee.interface'
 
 export class EmployeeModel implements IEmployee {
     _id?: string;
+    idNumber?: string;
     email?: string;
     firstname: string;
     surname: string;
@@ -21,12 +22,14 @@ export class EmployeeModel implements IEmployee {
         country: CountryEnum,
         idType: IDTypeEnum,
         admissionDate: Date,
-        idNumber?: string,
+        idNumber: string,
         area?: AreaEnum,
         othersnames?: string | undefined,
         email?: string,
+        _id?: string
     ) {
-        this._id = idNumber;
+        this._id = _id;
+        this.idNumber = idNumber;
         this.email = email;
         this.firstname = firstname;
         this.surname = surname;
@@ -42,6 +45,7 @@ export class EmployeeModel implements IEmployee {
 
 export class UpdateEmployeeModel implements IEmployee {
     _id?: string | undefined;
+    idNumber?: string | undefined;
     firstname: string;
     surname: string;
     secondSurname: string;
@@ -53,17 +57,19 @@ export class UpdateEmployeeModel implements IEmployee {
     email: string;
 
     constructor(
+        _id: string,
         idNumber: string,
         firstname: string,
         surname: string,
         secondSurname: string,
-        country: CountryEnum,
-        idType: IDTypeEnum,
-        area: AreaEnum,
+        country: number,
+        idType: number,
+        area: number,
         email: string,
         othersnames?: string | undefined,
     ) {
-        this._id = idNumber;
+        this._id = _id;
+        this.idNumber = idNumber;
         this.firstname = firstname as string;
         this.surname = surname;
         this.secondSurname = secondSurname;

@@ -1,6 +1,6 @@
 export class EmployeesFilters {
 
-    _id?: String | RegExp;
+    idNumber?: String | RegExp;
     email?: String | RegExp;
     firstname?: String | RegExp;
     surname?: String | RegExp;
@@ -11,7 +11,7 @@ export class EmployeesFilters {
     state: Number;
 
     constructor(
-        _id?: string,
+        idNumber?: string,
         email?: string,
         firstname?: string,
         surname?: string,
@@ -21,7 +21,7 @@ export class EmployeesFilters {
         area: number = -1,
         state: number = -1
     ) {
-        this._id = _id;
+        this.idNumber = idNumber;
         this.email = email;
         this.firstname = firstname;
         this.surname = surname;
@@ -39,7 +39,7 @@ export class EmployeesFilters {
         if(this.country) jsonObj["country"] = this.country || /.*/
         if(this.idType !== -1) jsonObj["idType"] = this.idType
         if(this.area !== -1) jsonObj["area"] = this.area
-        if(this._id) jsonObj["_id"] = this._id || /.*/
+        if(this.idNumber) jsonObj["idNumber"] = this.idNumber || /.*/
         if(this.email) jsonObj["email"] = this.email || /.*/
         if(this.firstname) jsonObj["firstname"] = this.firstname || /.*/
         if(this.surname) jsonObj["surname"] = this.surname || /.*/

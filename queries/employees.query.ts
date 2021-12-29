@@ -29,7 +29,7 @@ export const PaginateEmployees = async (page: number = 0, documents: number = 10
 export const InsertOneEmployee = async (employee: IEmployee): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve, reject) => {
         const employeeModel = new Employee({
-            _id: employee._id,
+            idNumber: employee.idNumber,
             email: employee.email,
             firstname: employee.firstname,
             surname: employee.surname,
@@ -85,13 +85,14 @@ export const UpdateOneEmployee = async (employee: IEmployee): Promise<IResponseM
                     result.surname = employee.surname;
                     result.secondSurname = employee.secondSurname;
                     result.othersnames = employee.othersnames;
-                    result.country = employee.country;
-                    result.idType = employee.idType;
-                    result.area = employee.area;
+                    result.country = employee.country as number;
+                    result.idType = employee.idType as number;
+                    result.area = employee.area as number;
                     result.email = employee.email;
-
+                    result.idNumber = employee.idNumber;
+                    
                     try{
-                        result.save((error: any, result: any) => {
+                        result.save((error: any, saveResult: any) => {
                             if(error) {
                                 console.error("ERROR IN UPDATEONEEMPLOYEE IN EMPLOYEES QUERY: ", error)
                                 return reject(new BooleanResponseModel(true, error.toString()))
@@ -104,13 +105,16 @@ export const UpdateOneEmployee = async (employee: IEmployee): Promise<IResponseM
                     }
                 }
             })
+            .catch(error => {
+                return reject(new BooleanResponseModel(true, error, 400))
+            })
     })
 }
 
-export const FindOneEmployeeByID = async (idNumber: string): Promise<IResponseModel> => {
+export const FindOneEmployeeByID = async (_id: string): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, reject: any) => {
         Employee
-            .findById(idNumber)
+            .findById(_id)
             .then(async (result: any) => {
                 if(result == null) {
                     console.error("ERROR IN FINDONEEMPLOYEEBYID IN EMPLOYEES QUERY: ", result)
@@ -124,10 +128,27 @@ export const FindOneEmployeeByID = async (idNumber: string): Promise<IResponseMo
     })
 }
 
-export const DeleteOneEmployee = async (idNumber: string): Promise<IResponseModel> => {
+export const FindOneEmployeeByIDNumber = async (idNumber: string): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, reject: any) => {
         Employee
-            .deleteOne({_id: idNumber})
+            .find({idNumber: idNumber})
+            .then(async (result: any) => {
+                if(result == null) {
+                    console.error("ERROR IN FINDONEEMPLOYEEBYIDNUMBER IN EMPLOYEES QUERY: ", result)
+                    return reject(new BooleanResponseModel(true, "Not found"))
+                }
+                else return resolve(new EmployeeResponseModel(false, result))
+            })
+            .catch(error => {
+                return reject(new BooleanResponseModel(true, error))
+            })
+    })
+}
+
+export const DeleteOneEmployee = async (_id: string): Promise<IResponseModel> => {
+    return new Promise<IResponseModel>((resolve: any, reject: any) => {
+        Employee
+            .deleteOne({_id: _id})
             .then((result: any) => {
                 if(result == null){
                     console.error("ERROR IN DELETEONEEMPLOYEE IN EMPLOYEES QUERY: ", result);

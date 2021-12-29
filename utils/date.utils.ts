@@ -16,5 +16,7 @@ export const IsUpperThanToday = (date: Date) => {
 
 export const IsLessThanAMonth = (date: Date) => {
     const result = SubstractDates(date, new Date())
-    return result > 30
+    console.log(date)
+    console.log(result)
+    return result < 30
 }

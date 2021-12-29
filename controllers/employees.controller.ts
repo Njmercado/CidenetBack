@@ -7,28 +7,28 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { EmployeeModel, UpdateEmployeeModel } from '../model/models/employee.model';
 import { CountryEnum } from '../model/enums/enums';
 import { EmployeesFilters } from '../utils/filters.utils';
+import { IResponseModel } from '../model/models/response.model';
 var router = Router();
 
 router.post(
   '/',
   async function(req: Request, res: Response, next: NextFunction) {
-    const country: CountryEnum = CountryEnum[req.body.country as keyof typeof CountryEnum]
-
     const employeeModel = new EmployeeModel(
       req.body.firstname,
       req.body.surname,
       req.body.secondSurname,
-      country,
+      req.body.country,
       req.body.idType,
       req.body.admissionDate,
       req.body.idNumber,
       req.body.area,
       req.body.othersnames
     );
+
     InsertOne(employeeModel)
-    .then(result => {
+    .then((result: IResponseModel) => {
       return res
-        .status(200)
+        .status(result.ResponseCode as number)
         .json(result)
     })
     .catch(error => {
@@ -44,7 +44,7 @@ router.post(
     const documents = Number.parseInt(req.query["documents"] as string);
 
     const filters = new EmployeesFilters(
-      req.query?._id as string,
+      req.query?.idNumber as string,
       req.query?.email as string,
       req.query.firstname as string,
       req.query.surname as string,
@@ -64,13 +64,13 @@ router.post(
   '/',
   async function(req: Request, res: Response, next: NextFunction) {
 
-    const country: CountryEnum = CountryEnum[req.body.country as keyof typeof CountryEnum]
     const employeeModel = new UpdateEmployeeModel(
       req.body._id,
+      req.body.idNumber,
       req.body.firstname,
       req.body.surname,
       req.body.secondSurname,
-      country,
+      req.body.country,
       req.body.idType,
       req.body.area,
       req.body.email,
@@ -92,7 +92,7 @@ router.post(
 ).delete(
   '/',
   async function(req: Request, res: Response, next: NextFunction) {
-    DeleteOne(req.body._id)
+    DeleteOne(req.query._id as string)
     .then(result => {
       return res
         .status(200)

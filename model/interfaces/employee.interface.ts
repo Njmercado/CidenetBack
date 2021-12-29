@@ -7,6 +7,7 @@ import {
 
 export interface IEmployee {
     _id?: string,
+    idNumber?: string,
     email?: string,
     firstname: string,
     surname: string,

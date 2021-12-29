@@ -21,7 +21,7 @@ const AreasLength = AreaValues.length / 2;
 
 const EmployeeSchema = new mongoose.Schema<IEmployee>(
   {
-    _id: {
+    idNumber: {
       type: String,
       validate: {
         validator: function(id: string) {
@@ -76,20 +76,22 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
         },
         message: "El campo de otros nombres debe estar en mayusculas"
       },
+      default: "",
       maxlength: 300
     },
     country:  {
-      type: String,
-      enum: CountriesValues.slice( CountriesLength, -1),
+      type: Number,
+      enum: CountriesValues.slice( CountriesLength),
       required: [true, 'País es obligatorio']
     },
     idType: {
       type: Number,
-      enum: IDTypesValues.slice(IDTypesLength, -1),
+      enum: IDTypesValues.slice(IDTypesLength),
       required: [true, 'Tipo de Identificación es obligatorio']
     },
     admissionDate: {
       type: Date,
+      default: new Date(),
       required: [true, 'Fecha de ingreso es obligatoria'],
       validate: {
         validator: function(date: Date) {
@@ -108,16 +110,13 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
     },
     area: {
       type: Number,
-      enum: AreaValues.slice(AreasLength, -1),
+      enum: AreaValues.slice(AreasLength),
       required: [true, 'Area debe ser obligatoria']
     },
     state: {
       type: Number,
       default: StateEnum.ACTIVO
     }
-  },
-  {
-    _id: false
   }
 )
 

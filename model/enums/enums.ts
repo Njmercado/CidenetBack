@@ -1,6 +1,6 @@
 export enum CountryEnum {
-    COLOMBIA = "Colombia",
-    USA = "Estados Unidos"
+    COLOMBIA = 0,
+    USA = 1
 }
 
 export enum IDTypeEnum {

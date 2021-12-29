@@ -5,7 +5,8 @@ import {
     GetLastEmployeeInsertedWithEmail,
     InsertOneEmployee, UpdateOneEmployee,
     FindOneEmployeeByID,
-    DeleteOneEmployee
+    DeleteOneEmployee,
+    FindOneEmployeeByIDNumber
 } from '../queries/employees.query';
 import { GenerateEmailTemplateFromName, GetNextEmailID } from '../utils/employee.utils'
 import { EmailModel } from '../utils/email.utils';
@@ -26,22 +27,33 @@ export const FindAll = async (page: number = 0, documents: number = 10, filters:
 export const InsertOne = async (employee: IEmployee): Promise<IResponseModel> => {
     return new Promise<IResponseModel>( async (resolve: any, reject: any) => {
 
-        const result = await GenerateEmail(employee);
+        try{
 
-        if(!result.Error) {
-            //En  caso de no haber error guardo el empleado
-            InsertOneEmployee(employee)
-            .then( (result: IResponseModel) => {
-                if(result.Error)
-                    return reject(result)
-                else
-                    return resolve(result)
-            })
-            .catch(error => {
-                return reject(error)
-            });
-        } else {
-            return reject(result)
+            const exist = await FindOneEmployeeByIDNumber(employee.idNumber as string)
+
+            if(!exist.Error && exist.Data.length > 0) {
+                return reject(new BooleanResponseModel(true, "Este usuario ya existe", 400))
+            }
+
+            const result = await GenerateEmail(employee);
+
+            if(!result.Error) {
+                //En  caso de no haber error guardo el empleado
+                InsertOneEmployee(employee)
+                .then( (result: IResponseModel) => {
+                    if(result.Error)
+                        return reject(result)
+                    else
+                        return resolve(result)
+                })
+                .catch(error => {
+                    return reject(error)
+                });
+            } else {
+                return reject(result)
+            }
+        } catch(e) {
+            return reject(new BooleanResponseModel(true, "Error guardando empleado", 400))
         }
     })
 }
@@ -94,19 +106,23 @@ export const DeleteOne = async (idNumber: string): Promise<IResponseModel> => {
 const GenerateEmail = async (employee: IEmployee): Promise<IResponseModel> => {
 
     return new Promise<IResponseModel>(async (resolve: any, reject: any) => {
-        const emailTemplate: EmailModel = GenerateEmailTemplateFromName(employee);
-        const lastEmployeeResponse = await GetLastEmployeeInsertedWithEmail(emailTemplate.getRegexEmail());
+        try{
+            const emailTemplate: EmailModel = GenerateEmailTemplateFromName(employee);
+            const lastEmployeeResponse = await GetLastEmployeeInsertedWithEmail(emailTemplate.getRegexEmail());
 
-        if(!lastEmployeeResponse.Error) {
-            const lastEmail = lastEmployeeResponse.Data[0]?.email || null;
+            if(!lastEmployeeResponse.Error) {
+                const lastEmail = lastEmployeeResponse.Data[0]?.email || null;
 
-            if(lastEmail){ // Si ya hay un empleado registrado obtengo el siguiente id del email
-                emailTemplate.ID = GetNextEmailID(lastEmail);
+                if(lastEmail){ // Si ya hay un empleado registrado obtengo el siguiente id del email
+                    emailTemplate.ID = GetNextEmailID(lastEmail);
+                }
+                employee.email = emailTemplate.getCompleteEmail();
+                resolve(new EmployeeResponseModel(false, employee))
+            } else {
+                reject(new BooleanResponseModel(true, ""))
             }
-            employee.email = emailTemplate.getCompleteEmail();
-            resolve(new EmployeeResponseModel(false, employee))
-        } else {
-            reject(new BooleanResponseModel(true, ""))
+        } catch(e) {
+            reject(new BooleanResponseModel(true, e as string, 500))
         }
     })
 }
