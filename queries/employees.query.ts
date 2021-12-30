@@ -48,7 +48,10 @@ export const InsertOneEmployee = async (employee: IEmployee): Promise<IResponseM
                     console.error("ERROR SAVING EMPLOYEE IN INSERTONEEMPLOYEE IN EMPLOYEES QUERY: ", error)
                     return reject(new BooleanResponseModel(true, error.toString()))
                 } else {
-                    return resolve(new BooleanResponseModel(false, ""))
+                    return resolve(new BooleanResponseModel(
+                        false,
+                        [`Empleado ${employeeModel.firstname} ${employeeModel.surname} ha sido creado con exito`]
+                    ))
                 }
             })
         } catch(e) {
@@ -97,7 +100,10 @@ export const UpdateOneEmployee = async (employee: IEmployee): Promise<IResponseM
                                 console.error("ERROR IN UPDATEONEEMPLOYEE IN EMPLOYEES QUERY: ", error)
                                 return reject(new BooleanResponseModel(true, error.toString()))
                             } else {
-                                return resolve(new BooleanResponseModel(false, ""))
+                                return resolve(new BooleanResponseModel(
+                                    false,
+                                    [`Empleado ${result.firstname} ${result.surname} actualizado con exito`]
+                                ))
                             }
                         });
                     } catch(e) {
@@ -154,7 +160,10 @@ export const DeleteOneEmployee = async (_id: string): Promise<IResponseModel> =>
                     console.error("ERROR IN DELETEONEEMPLOYEE IN EMPLOYEES QUERY: ", result);
                     return reject(new BooleanResponseModel(true, "Not found"));
                 } else {
-                    return resolve(new BooleanResponseModel(false, ""))
+                    return resolve(new BooleanResponseModel(
+                        false,
+                        [`Empleado ${result.firstname} ${result.surname} ha sido borrado con exito`]
+                    ))
                 }
             })
             .catch(error => {

@@ -3,7 +3,7 @@ import { IEmployee } from '../interfaces/employee.interface'
 export interface IResponseModel {
     Error: Boolean
     Data?: any
-    Message?: String
+    Message?: String | Array<String>
     ResponseCode?: Number
 }
 
@@ -37,10 +37,10 @@ export class EmployeeResponseModel implements IResponseModel {
 
 export class BooleanResponseModel implements IResponseModel {
     Error: Boolean;
-    Message: String
+    Message: String | Array<String>
     ResponseCode?: Number
 
-    constructor(Error: Boolean, Message: String, ResponseCode: Number = 200) {
+    constructor(Error: Boolean, Message: String | Array<String>, ResponseCode: Number = 200) {
         this.Error = Error;
         this.Message = Message;
         this.ResponseCode = ResponseCode;

@@ -13,7 +13,7 @@ router.post(
   '/',
   [
     check("email")
-      .isEmpty()
+      .not().exists()
       .withMessage("No se puede ingresar el correo manualmente"),
     check("country")
       .if((value: number) => value >= 0)
@@ -48,7 +48,7 @@ router.post(
 
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-      return res.status(400).json({
+      return res.status(200).json({
         Error: true,
         Message: errors.array().map(error => error.msg)
       })
