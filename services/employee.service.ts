@@ -93,12 +93,16 @@ export const UpdateOne = async (employee: IEmployee): Promise<IResponseModel> =>
     })
 }
 
-export const DeleteOne = async (idNumber: string): Promise<IResponseModel> => {
+export const DeleteOne = async (_id: string): Promise<IResponseModel> => {
     return new Promise<IResponseModel>((resolve: any, reject: any) => {
-        DeleteOneEmployee(idNumber)
+        
+        DeleteOneEmployee(_id)
         .then((result: IResponseModel) => {
             if(result.Error) return reject(result);
             else return resolve(result);
+        })
+        .catch(e => {
+            return resolve(e);
         })
     })
 }

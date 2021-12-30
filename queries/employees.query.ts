@@ -152,7 +152,10 @@ export const FindOneEmployeeByIDNumber = async (idNumber: string): Promise<IResp
 }
 
 export const DeleteOneEmployee = async (_id: string): Promise<IResponseModel> => {
-    return new Promise<IResponseModel>((resolve: any, reject: any) => {
+    return new Promise<IResponseModel>( async (resolve: any, reject: any) => {
+
+        const employee = await Employee.findById(_id).exec();
+
         Employee
             .deleteOne({_id: _id})
             .then((result: any) => {
@@ -162,7 +165,7 @@ export const DeleteOneEmployee = async (_id: string): Promise<IResponseModel> =>
                 } else {
                     return resolve(new BooleanResponseModel(
                         false,
-                        [`Empleado ${result.firstname} ${result.surname} ha sido borrado con exito`]
+                        [`Empleado ${employee?.firstname} ${employee?.surname} ha sido borrado con exito`]
                     ))
                 }
             })
