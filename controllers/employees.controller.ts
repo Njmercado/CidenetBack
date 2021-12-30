@@ -16,26 +16,43 @@ router.post(
       .not().exists()
       .withMessage("No se puede ingresar el correo manualmente"),
     check("country")
+      .not().isEmpty()
+      .withMessage("El campo del País es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Pais debe ser tipo númerico"),
     check("idType")
+      .not().isEmpty()
+      .withMessage("El campo del Tipo de Documento es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
+    check("idNumber")
+      .not().isEmpty()
+      .withMessage("El campo del Número del Documento es obligatorio")
+      .if((value: number) => value >= 0)
+        .isString().withMessage("Número de documento debe ser tipo Alfa-Númerico"),
     check("area")
+      .not().isEmpty()
+      .withMessage("El campo del Area es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Area debe ser tipo númerico"),
     check("state")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Estado debe ser tipo númerico"),
     check("firstname")
+      .not().isEmpty()
+      .withMessage("El campo del Nombre es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El nombre debe contener solo letras")
         .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
     check("surname")
+      .not().isEmpty()
+      .withMessage("El campo del Apellido es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El apellido debe contener solo letras")
         .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
     check("secondSurname")
+      .not().isEmpty()
+      .withMessage("El campo del Segundo Apellido es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El segundo apellido debe contener solo letras")
         .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
@@ -90,6 +107,11 @@ router.post(
     check("idType")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
+    check("idNumber")
+      .not().isEmpty()
+      .withMessage("El campo del Número del Documento es obligatorio")
+      .if((value: number) => value >= 0)
+        .isString().withMessage("Número de documento debe ser tipo Alfa-Númerico"),
     check("area")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Area debe ser tipo númerico"),
@@ -148,26 +170,38 @@ router.post(
 ).put(
   '/', [
     check("country")
+      .not().isEmpty()
+      .withMessage("El campo del País es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Pais debe ser tipo númerico"),
     check("idType")
+      .not().isEmpty()
+      .withMessage("El campo del Tipo de Documento es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
     check("area")
+      .not().isEmpty()
+      .withMessage("El campo del Area es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Area debe ser tipo númerico"),
     check("state")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Estado debe ser tipo númerico"),
     check("firstname")
+      .not().isEmpty()
+      .withMessage("El campo del Nombre es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El nombre debe contener solo letras")
         .isUppercase().withMessage("El nombre solo debe contener letras en mayuscula"),
     check("surname")
+      .not().isEmpty()
+      .withMessage("El campo del Apellido es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El apellido debe contener solo letras")
         .isUppercase().withMessage("El apellido solo debe contener letras en mayuscula"),
     check("secondSurname")
+      .not().isEmpty()
+      .withMessage("El campo del Segundo Apellido es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El segundo apellido debe contener solo letras")
         .isUppercase().withMessage("El segundo apellido solo debe contener letras en mayuscula"),
