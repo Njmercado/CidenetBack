@@ -5,14 +5,55 @@ import {
 import { FindAll, InsertOne, UpdateOne, DeleteOne } from '../services/employee.service'
 import { Router, Request, Response, NextFunction } from 'express'
 import { EmployeeModel, UpdateEmployeeModel } from '../model/models/employee.model';
-import { CountryEnum } from '../model/enums/enums';
 import { EmployeesFilters } from '../utils/filters.utils';
 import { IResponseModel } from '../model/models/response.model';
 var router = Router();
 
 router.post(
   '/',
+  [
+    check("email")
+      .isEmpty()
+      .withMessage("No se puede ingresar el correo manualmente"),
+    check("country")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Pais debe ser tipo númerico"),
+    check("idType")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
+    check("area")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Area debe ser tipo númerico"),
+    check("state")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Estado debe ser tipo númerico"),
+    check("firstname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El nombre debe contener solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+    check("surname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El apellido debe contener solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+    check("secondSurname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El segundo apellido debe contener solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+    check("othersnames")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("Otros nombres deben ser solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula")
+  ],
   async function(req: Request, res: Response, next: NextFunction) {
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(400).json({
+        Error: true,
+        Message: errors.array().map(error => error.msg)
+      })
+    }
+
     const employeeModel = new EmployeeModel(
       req.body.firstname,
       req.body.surname,
@@ -39,7 +80,51 @@ router.post(
   }
 ).get(
   '/',
+  [
+    check("email")
+      .if((value: string) => value.length > 0)
+        .isEmail().withMessage("Correo invalido"),
+    check("country")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Pais debe ser tipo númerico"),
+    check("idType")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
+    check("area")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Area debe ser tipo númerico"),
+    check("state")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Estado debe ser tipo númerico"),
+    check("firstname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El nombre debe contener solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+    check("surname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El apellido debe contener solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+    check("secondSurname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El segundo apellido debe contener solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+    check("othersnames")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("Otros nombres deben ser solo letras")
+        .isUppercase().withMessage("Solo debe contener letras en mayuscula")
+  ],
   async function(req: Request, res: Response, next: NextFunction) {
+
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()) {
+      console.log(errors.array())
+      return res.status(400).json({
+        Error: true,
+        Message: errors.array().map(error => error.msg)
+      });
+    }
+
     const page = Number.parseInt(req.query["page"] as string);
     const documents = Number.parseInt(req.query["documents"] as string);
 
@@ -61,8 +146,46 @@ router.post(
       .json(result);
   }
 ).put(
-  '/',
+  '/', [
+    check("country")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Pais debe ser tipo númerico"),
+    check("idType")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
+    check("area")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Area debe ser tipo númerico"),
+    check("state")
+      .if((value: number) => value >= 0)
+        .isNumeric().withMessage("Estado debe ser tipo númerico"),
+    check("firstname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El nombre debe contener solo letras")
+        .isUppercase().withMessage("El nombre solo debe contener letras en mayuscula"),
+    check("surname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El apellido debe contener solo letras")
+        .isUppercase().withMessage("El apellido solo debe contener letras en mayuscula"),
+    check("secondSurname")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("El segundo apellido debe contener solo letras")
+        .isUppercase().withMessage("El segundo apellido solo debe contener letras en mayuscula"),
+    check("othersnames")
+      .if((value: string) => value.length > 0)
+        .isString().withMessage("Otros nombres deben ser solo letras")
+        .isUppercase().withMessage("Otros nombre solo debe contener letras en mayuscula")
+  ],
   async function(req: Request, res: Response, next: NextFunction) {
+
+    const errors = validationResult(req)
+    console.log(errors.array())
+    if(!errors.isEmpty()) {
+      return res.status(200).json({
+        Error: true,
+        Message: errors.array().map(error => error.msg)
+      })
+    }
 
     const employeeModel = new UpdateEmployeeModel(
       req.body._id,
@@ -90,7 +213,7 @@ router.post(
       })
   }
 ).delete(
-  '/',
+  '/', 
   async function(req: Request, res: Response, next: NextFunction) {
     DeleteOne(req.query._id as string)
     .then(result => {
