@@ -43,23 +43,23 @@ router.post(
       .withMessage("El campo del Nombre es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El nombre debe contener solo letras")
-        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+        .isUppercase().withMessage("El Nombre solo debe contener letras en mayuscula"),
     check("surname")
       .not().isEmpty()
       .withMessage("El campo del Apellido es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El apellido debe contener solo letras")
-        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+        .isUppercase().withMessage("El Apellido solo debe contener letras en mayuscula"),
     check("secondSurname")
       .not().isEmpty()
       .withMessage("El campo del Segundo Apellido es obligatorio")
       .if((value: string) => value.length > 0)
         .isString().withMessage("El segundo apellido debe contener solo letras")
-        .isUppercase().withMessage("Solo debe contener letras en mayuscula"),
+        .isUppercase().withMessage("El Segundo Apellido solo debe contener letras en mayuscula"),
     check("othersnames")
       .if((value: string) => value.length > 0)
         .isString().withMessage("Otros nombres deben ser solo letras")
-        .isUppercase().withMessage("Solo debe contener letras en mayuscula")
+        .isUppercase().withMessage("Los Otros Nombres solo deben contener letras en mayuscula")
   ],
   async function(req: Request, res: Response, next: NextFunction) {
 
@@ -107,11 +107,6 @@ router.post(
     check("idType")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
-    check("idNumber")
-      .not().isEmpty()
-      .withMessage("El campo del Número del Documento es obligatorio")
-      .if((value: number) => value >= 0)
-        .isString().withMessage("Número de documento debe ser tipo Alfa-Númerico"),
     check("area")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Area debe ser tipo númerico"),
@@ -179,6 +174,11 @@ router.post(
       .withMessage("El campo del Tipo de Documento es obligatorio")
       .if((value: number) => value >= 0)
         .isNumeric().withMessage("Tipo de documento debe ser tipo númerico"),
+    check("idNumber")
+      .not().isEmpty()
+      .withMessage("El campo del Número del Documento es obligatorio")
+      .if((value: number) => value >= 0)
+        .isString().withMessage("Número de documento debe ser tipo Alfa-Númerico"),
     check("area")
       .not().isEmpty()
       .withMessage("El campo del Area es obligatorio")
