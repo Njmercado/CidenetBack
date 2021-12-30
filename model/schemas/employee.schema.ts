@@ -44,7 +44,7 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
         },
         message: "El nombre debe estar en mayusculas"
       },
-      maxlength: 300
+      maxlength: 20
     },
     surname: {
       type: String,
@@ -55,7 +55,7 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
         },
         message: "El primer apellido debe estar en mayusculas"
       },
-      maxlength: 300
+      maxlength: 20
     },
     secondSurname: {
       type: String,
@@ -66,7 +66,7 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
         },
         message: "El segundo apellido debe estar en mayusculas"
       },
-      maxlength: 300
+      maxlength: 20
     },
     othersnames: {
       type: String,
@@ -77,7 +77,7 @@ const EmployeeSchema = new mongoose.Schema<IEmployee>(
         message: "El campo de otros nombres debe estar en mayusculas"
       },
       default: "",
-      maxlength: 300
+      maxlength: 20
     },
     country:  {
       type: Number,
