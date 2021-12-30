@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  mongodb:
+    env_file: ./.env
+    image: mongo
+    ports:
+      - "27017:27017" 
+    volumes:
+      - mongodata:/data/db
+  backend:
+    depends_on: 
+      - mongodb
+    build: .
+    restart: unless-stopped
+    container_name: cidenet_backend
+    command: "npm run prod"
+    ports:
+      - "5500:5500"
+
+volumes:
+  mongodata:

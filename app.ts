@@ -1,10 +1,10 @@
+require("dotenv").config();
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 import cors from 'cors'
-
-const PORT = 5500
 
 var employeesRouter = require('./controllers/employees.controller');
 
@@ -19,6 +19,6 @@ app.use(cors( { credentials: true, origin: true } ))
 
 app.use('/employees', employeesRouter);
 
-app.listen(PORT, () => {
-    console.log(`Server running in port ${PORT}`)
+app.listen(process.env.PORT, () => {
+    console.log(`Server running in port ${process.env.PORT}`)
 })

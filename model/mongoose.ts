@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
-const url = 'mongodb://localhost/cidenetback'
+const {
+  DB_HOST,
+  DB_PORT,
+  DB_NAME,
+} = process.env;
+
+const url = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`
 
 mongoose.connect(url)
 
