@@ -135,7 +135,6 @@ router.post(
     const errors = validationResult(req);
 
     if(!errors.isEmpty()) {
-      console.log(errors.array())
       return res.status(400).json({
         Error: true,
         Message: errors.array().map(error => error.msg)
@@ -213,7 +212,6 @@ router.post(
   async function(req: Request, res: Response, next: NextFunction) {
 
     const errors = validationResult(req)
-    console.log(errors.array())
     if(!errors.isEmpty()) {
       return res.status(200).json({
         Error: true,
